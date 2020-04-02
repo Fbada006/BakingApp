@@ -17,7 +17,7 @@ public class BindingUtils {
      * same name in lowercase and lacking spaces. Otherwise, load the one from the JSON response
      */
     @BindingAdapter("imagePastry")
-    private void setPastryImage(ImageView imageView, Pastry pastry) {
+    public void setPastryImage(ImageView imageView, Pastry pastry) {
         Context context = imageView.getContext();
         if (TextUtils.isEmpty(pastry.getImage())) {
             Glide.with(context)

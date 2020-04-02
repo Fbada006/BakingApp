@@ -1,5 +1,7 @@
 package com.disruption.bakingapp.model;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 public class Pastry {
@@ -16,13 +18,17 @@ public class Pastry {
 
     private String image;
 
-    public Pastry(int id, String name, List<Ingredients> ingredients, List<Steps> steps, int servings, String image) {
+    @Nullable
+    private String errorMessage;
+
+    public Pastry(int id, String name, List<Ingredients> ingredients, List<Steps> steps, int servings, String image, String errorMessage) {
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
         this.servings = servings;
         this.image = image;
+        this.errorMessage = errorMessage;
     }
 
     public Pastry() {
@@ -58,5 +64,13 @@ public class Pastry {
 
     public String getImage() {
         return this.image;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }
