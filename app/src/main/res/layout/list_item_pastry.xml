@@ -5,13 +5,24 @@
 
     <data>
 
+        <variable
+            name="pastry"
+            type="com.disruption.bakingapp.model.Pastry" />
+
+        <variable
+            name="clickListener"
+            type="com.disruption.bakingapp.adapters.PastryAdapter.PastryClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_small_margin"
+        android:clickable="true"
         android:elevation="@dimen/activity_card_elevation"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> clickListener.onPastryClickListener(pastry)}"
         app:cardCornerRadius="@dimen/activity_card_radius">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,13 +38,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
                 android:id="@+id/tv_pastry_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="@{pastry.name}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/black"
                 android:textStyle="italic"

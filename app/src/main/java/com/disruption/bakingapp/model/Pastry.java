@@ -2,7 +2,7 @@ package com.disruption.bakingapp.model;
 
 import java.util.List;
 
-public class PastryResponse {
+public class Pastry {
 
     private int id;
 
@@ -16,7 +16,7 @@ public class PastryResponse {
 
     private String image;
 
-    public PastryResponse(int id, String name, List<Ingredients> ingredients, List<Steps> steps, int servings, String image) {
+    public Pastry(int id, String name, List<Ingredients> ingredients, List<Steps> steps, int servings, String image) {
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
@@ -25,7 +25,7 @@ public class PastryResponse {
         this.image = image;
     }
 
-    public PastryResponse() {
+    public Pastry() {
     }
 
     public void setId(int id) {
@@ -50,6 +50,10 @@ public class PastryResponse {
 
     public int getServings() {
         return this.servings;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getImage() {

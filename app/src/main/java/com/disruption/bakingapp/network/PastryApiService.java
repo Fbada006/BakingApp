@@ -1,6 +1,6 @@
 package com.disruption.bakingapp.network;
 
-import com.disruption.bakingapp.model.PastryResponse;
+import com.disruption.bakingapp.model.Pastry;
 
 import io.reactivex.Flowable;
 import retrofit2.http.GET;
@@ -8,5 +8,5 @@ import retrofit2.http.GET;
 public interface PastryApiService {
 
     @GET("baking.json")
-    Flowable<PastryResponse> getPastries();
+    Flowable<Pastry> getPastries();
 }
