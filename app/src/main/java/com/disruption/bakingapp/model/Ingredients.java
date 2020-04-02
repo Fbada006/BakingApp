@@ -1,19 +1,20 @@
 package com.disruption.bakingapp.model;
 
 public class Ingredients {
-    private int quantity;
+
+    private Double quantity;
 
     private String measure;
 
     private String ingredient;
 
-    public Ingredients(int quantity, String measure, String ingredient) {
+    public Ingredients(Double quantity, String measure, String ingredient) {
         this.quantity = quantity;
         this.measure = measure;
         this.ingredient = ingredient;
     }
 
-    public int getQuantity() {
+    public Double getQuantity() {
         return this.quantity;
     }
 

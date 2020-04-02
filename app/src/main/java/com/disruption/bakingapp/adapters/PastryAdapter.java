@@ -45,7 +45,8 @@ public class PastryAdapter extends ListAdapter<Pastry, PastryAdapter.PastryViewH
         }
 
         private void bind(Pastry pastry, PastryClickListener pastryClickListener) {
-
+            mPastryBinding.setPastry(pastry);
+            mPastryBinding.setClickListener(pastryClickListener);
         }
     }
 

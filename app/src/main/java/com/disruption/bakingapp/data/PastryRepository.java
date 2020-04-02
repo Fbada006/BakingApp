@@ -14,9 +14,9 @@ import java.util.List;
 import io.reactivex.schedulers.Schedulers;
 
 public class PastryRepository {
-    private MediatorLiveData<Resource<List<Pastry>>> mPastryResource;
+    private static MediatorLiveData<Resource<List<Pastry>>> mPastryResource;
 
-    public LiveData<Resource<List<Pastry>>> getPastries() {
+    public static LiveData<Resource<List<Pastry>>> getPastries() {
         if (mPastryResource == null) {
             mPastryResource = new MediatorLiveData<>();
             mPastryResource.setValue(Resource.loading());

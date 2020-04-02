@@ -17,7 +17,7 @@ public class BindingUtils {
      * same name in lowercase and lacking spaces. Otherwise, load the one from the JSON response
      */
     @BindingAdapter("imagePastry")
-    public void setPastryImage(ImageView imageView, Pastry pastry) {
+    public static void setPastryImage(ImageView imageView, Pastry pastry) {
         Context context = imageView.getContext();
         if (TextUtils.isEmpty(pastry.getImage())) {
             Glide.with(context)
@@ -36,7 +36,7 @@ public class BindingUtils {
         }
     }
 
-    private int getPastryDrawable(Context context, String drawableName) {
+    private static int getPastryDrawable(Context context, String drawableName) {
         return context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
     }
 }
