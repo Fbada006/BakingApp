@@ -1,5 +1,6 @@
 package com.disruption.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -63,6 +64,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onPastryClick(Pastry pastry) {
-        Toast.makeText(this, "Clicked " + pastry.getName(), Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, PastryListActivity.class));
     }
 }
