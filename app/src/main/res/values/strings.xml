@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">BakingApp</string>
+    <string name="image_of_the_pastry">Image of the pastry</string>
+    <string name="no_data_to_display">There is no data to display. Please try again</string>
+    <string name="error_has_occurred">Something has gone wrong with the following error message: %s</string>
 </resources>
