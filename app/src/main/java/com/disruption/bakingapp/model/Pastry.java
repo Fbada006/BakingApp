@@ -1,10 +1,13 @@
 package com.disruption.bakingapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class Pastry {
+public class Pastry implements Parcelable {
 
     private int id;
 
@@ -33,6 +36,26 @@ public class Pastry {
 
     public Pastry() {
     }
+
+    protected Pastry(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        servings = in.readInt();
+        image = in.readString();
+        errorMessage = in.readString();
+    }
+
+    public static final Creator<Pastry> CREATOR = new Creator<Pastry>() {
+        @Override
+        public Pastry createFromParcel(Parcel in) {
+            return new Pastry(in);
+        }
+
+        @Override
+        public Pastry[] newArray(int size) {
+            return new Pastry[size];
+        }
+    };
 
     public void setId(int id) {
         this.id = id;
@@ -66,11 +89,26 @@ public class Pastry {
         return this.image;
     }
 
+    @Nullable
     public String getErrorMessage() {
         return errorMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
+    public void setErrorMessage(@Nullable String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(name);
+        parcel.writeInt(servings);
+        parcel.writeString(image);
+        parcel.writeString(errorMessage);
     }
 }
