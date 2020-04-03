@@ -2,25 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widget_item"
-    android:layout_width="@dimen/app_widget_min_dimension"
-    android:layout_height="@dimen/app_widget_min_dimension">
-
-    <ImageView
-        android:id="@+id/widget_pastry_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/image_of_the_pastry" />
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/pastry_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="@color/colorPrimaryDark"
+        android:padding="@dimen/activity_card_radius"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/universal_app_text_size"
         android:textStyle="bold"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/pastry_ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pastry_title"
+        android:layout_marginStart="@dimen/activity_card_radius"
+        android:layout_marginTop="@dimen/activity_card_radius"
+        android:layout_marginBottom="@dimen/activity_card_radius"
+        android:background="@color/cardview_dark_background"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/universal_app_text_size"
         tools:text="TextView" />
 
 </RelativeLayout>
