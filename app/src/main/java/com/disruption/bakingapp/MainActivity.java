@@ -3,7 +3,6 @@ package com.disruption.bakingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -12,8 +11,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.disruption.bakingapp.adapters.PastryAdapter;
+import com.disruption.bakingapp.data.TinyDb;
 import com.disruption.bakingapp.databinding.ActivityMainBinding;
 import com.disruption.bakingapp.model.Pastry;
+import com.disruption.bakingapp.utils.Constants;
 import com.disruption.bakingapp.viewmodels.PastryViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
             switch (pastryResource.status) {
                 case SUCCESS:
                     if (pastryResource.data != null && !pastryResource.data.isEmpty()) {
+                        new TinyDb(this).saveListOfPastries(Constants.PASTRY_LIST_KEY, pastryResource.data);
                         adapter.submitList(pastryResource.data);
                         mBinding.progressBar.setVisibility(View.GONE);
                         mBinding.errorText.setVisibility(View.GONE);
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onPastryClick(Pastry pastry) {
-        startActivity(new Intent(this, PastryListActivity.class));
+        Intent intent = new Intent(this, PastryListActivity.class);
+        intent.putExtra(Constants.PASTRY_ID, pastry.getId());
+        startActivity(intent);
     }
 }

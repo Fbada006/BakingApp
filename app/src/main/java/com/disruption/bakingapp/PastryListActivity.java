@@ -1,5 +1,6 @@
 package com.disruption.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -12,8 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.disruption.bakingapp.adapters.PastryIngredientsAdapter;
 import com.disruption.bakingapp.adapters.PastryStepsAdapter;
+import com.disruption.bakingapp.data.TinyDb;
 import com.disruption.bakingapp.databinding.ActivityPastryListBinding;
-import com.disruption.bakingapp.dummy.DummyContent;
+import com.disruption.bakingapp.model.Pastry;
+import com.disruption.bakingapp.utils.Constants;
+
+import java.util.List;
 
 /**
  * An activity representing a list of Pastries. This activity
@@ -25,11 +30,19 @@ import com.disruption.bakingapp.dummy.DummyContent;
  */
 public class PastryListActivity extends AppCompatActivity {
 
+    private static final String TAG = "PastryListActivity";
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
+
+
+    /**
+     * The pastry passed from the MainActivity as an extra
+     */
+    private Pastry mPastry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +58,9 @@ public class PastryListActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        TinyDb tinyDb = new TinyDb(this);
+
+        List<Pastry> listOfPastries = tinyDb.getListOfPastries(Constants.PASTRY_LIST_KEY);
 
         if (findViewById(R.id.pastry_detail_container) != null) {
             // The detail container view will be present only in the
@@ -54,12 +70,45 @@ public class PastryListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        RecyclerView recyclerView = findViewById(R.id.pastry_list);
-        RecyclerView recyclerView1 = findViewById(R.id.pastry_list1);
-        assert recyclerView != null;
-        setupRecyclerView(recyclerView);
-        if (recyclerView1 != null) {
-            setupRecyclerView1(recyclerView1);
+        //Retrieve the intent containing the pastry
+        Intent intent = getIntent();
+        RecyclerView ingredientsListRv = binding.pastryListLayout.ingredientsList;
+        RecyclerView stepsListRv = binding.pastryListLayout.stepsList;
+
+        if (intent != null && intent.hasExtra(Constants.PASTRY_ID)) {
+            int id = intent.getIntExtra(Constants.PASTRY_ID, 0);
+            mPastry =
+                    TinyDb.getPastryFromId(id, listOfPastries);
+
+            if (mPastry != null) {
+                tinyDb.putInt(Constants.OUTSTATE_PASTRY_ID, mPastry.getId());
+            }
+
+            if (ingredientsListRv != null) {
+                setupIngredientsRecyclerView(ingredientsListRv);
+            }
+
+            if (stepsListRv != null) {
+                setupStepsRecyclerView(stepsListRv);
+            }
+        }
+
+        int savedId = tinyDb.getInt(Constants.OUTSTATE_PASTRY_ID);
+        if (savedId != 0) {
+            mPastry =
+                    TinyDb.getPastryFromId(savedId, listOfPastries);
+
+            if (mPastry != null) {
+                tinyDb.putInt(Constants.OUTSTATE_PASTRY_ID, mPastry.getId());
+            }
+
+            if (ingredientsListRv != null) {
+                setupIngredientsRecyclerView(ingredientsListRv);
+            }
+
+            if (stepsListRv != null) {
+                setupStepsRecyclerView(stepsListRv);
+            }
         }
     }
 
@@ -73,15 +122,19 @@ public class PastryListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+    private void setupIngredientsRecyclerView(@NonNull RecyclerView recyclerView) {
         final PastryIngredientsAdapter pastryIngredientsAdapter = new PastryIngredientsAdapter();
-        pastryIngredientsAdapter.submitList(DummyContent.ITEMS);
+        if (mPastry != null) {
+            pastryIngredientsAdapter.submitList(mPastry.getIngredients());
+        }
         recyclerView.setAdapter(pastryIngredientsAdapter);
     }
 
-    private void setupRecyclerView1(@NonNull RecyclerView recyclerView) {
+    private void setupStepsRecyclerView(@NonNull RecyclerView recyclerView) {
         final PastryStepsAdapter ingredientsAdapter = new PastryStepsAdapter(this, mTwoPane);
-        ingredientsAdapter.submitList(DummyContent.ITEMS);
+        if (mPastry != null) {
+            ingredientsAdapter.submitList(mPastry.getSteps());
+        }
         recyclerView.setAdapter(ingredientsAdapter);
     }
 }

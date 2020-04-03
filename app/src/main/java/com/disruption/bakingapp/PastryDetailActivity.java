@@ -3,10 +3,13 @@ package com.disruption.bakingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.disruption.bakingapp.utils.Constants;
 
 /**
  * An activity representing a single Pastry detail screen. This
@@ -42,8 +45,8 @@ public class PastryDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(PastryDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(PastryDetailFragment.ARG_ITEM_ID));
+            arguments.putString(PastryDetailFragment.ARG_PASTRY_NAME,
+                    getIntent().getStringExtra(PastryDetailFragment.ARG_PASTRY_NAME));
             PastryDetailFragment fragment = new PastryDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

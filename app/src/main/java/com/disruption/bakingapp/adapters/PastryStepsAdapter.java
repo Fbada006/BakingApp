@@ -18,12 +18,12 @@ import com.disruption.bakingapp.PastryDetailActivity;
 import com.disruption.bakingapp.PastryDetailFragment;
 import com.disruption.bakingapp.PastryListActivity;
 import com.disruption.bakingapp.R;
-import com.disruption.bakingapp.dummy.DummyContent;
+import com.disruption.bakingapp.model.Step;
 
 import org.jetbrains.annotations.NotNull;
 
 public class PastryStepsAdapter
-        extends ListAdapter<DummyContent.DummyItem, PastryStepsAdapter.ViewHolder> {
+        extends ListAdapter<Step, PastryStepsAdapter.ViewHolder> {
 
     private final PastryListActivity mParentActivity;
     private final boolean mTwoPane;
@@ -31,10 +31,10 @@ public class PastryStepsAdapter
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+            Step item = (Step) view.getTag();
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
-                arguments.putString(PastryDetailFragment.ARG_ITEM_ID, item.id);
+                arguments.putString(PastryDetailFragment.ARG_PASTRY_NAME, item.getDescription());
                 PastryDetailFragment fragment = new PastryDetailFragment();
                 fragment.setArguments(arguments);
                 mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -43,8 +43,7 @@ public class PastryStepsAdapter
             } else {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, PastryDetailActivity.class);
-                intent.putExtra(PastryDetailFragment.ARG_ITEM_ID, item.id);
-
+                intent.putExtra(PastryDetailFragment.ARG_PASTRY_NAME, item.getDescription());
                 context.startActivity(intent);
             }
         }
@@ -67,9 +66,8 @@ public class PastryStepsAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final DummyContent.DummyItem item = getItem(position);
-        holder.mIdView.setText(item.id);
-        holder.mContentView.setText(item.content);
+        final Step item = getItem(position);
+        holder.mIdView.setText(item.getDescription());
 
         holder.itemView.setTag(item);
         holder.itemView.setOnClickListener(mOnClickListener);
@@ -77,25 +75,23 @@ public class PastryStepsAdapter
 
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView mIdView;
-        final TextView mContentView;
 
         ViewHolder(View view) {
             super(view);
             mIdView = view.findViewById(R.id.id_text);
-            mContentView = view.findViewById(R.id.content);
         }
     }
 
-    private static final DiffUtil.ItemCallback<DummyContent.DummyItem> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<DummyContent.DummyItem>() {
+    private static final DiffUtil.ItemCallback<Step> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Step>() {
                 @Override
-                public boolean areItemsTheSame(@NonNull DummyContent.DummyItem oldItem, @NonNull DummyContent.DummyItem newItem) {
-                    return oldItem.id.equals(newItem.id);
+                public boolean areItemsTheSame(@NonNull Step oldItem, @NonNull Step newItem) {
+                    return oldItem.getDescription().equals(newItem.getDescription());
                 }
 
                 @SuppressLint("DiffUtilEquals")
                 @Override
-                public boolean areContentsTheSame(@NonNull DummyContent.DummyItem oldItem, @NonNull DummyContent.DummyItem newItem) {
+                public boolean areContentsTheSame(@NonNull Step oldItem, @NonNull Step newItem) {
                     return oldItem == newItem;
                 }
             };

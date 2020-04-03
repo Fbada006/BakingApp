@@ -12,14 +12,5 @@
         android:gravity="center_horizontal"
         android:padding="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Text of ingredient" />
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Content of the ingredient" />
+        tools:text="Text of item" />
 </LinearLayout>

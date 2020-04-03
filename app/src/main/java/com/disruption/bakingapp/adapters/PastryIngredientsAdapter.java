@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.disruption.bakingapp.R;
-import com.disruption.bakingapp.dummy.DummyContent;
+import com.disruption.bakingapp.model.Ingredient;
 
 import org.jetbrains.annotations.NotNull;
 
 public class PastryIngredientsAdapter
-        extends ListAdapter<DummyContent.DummyItem, PastryIngredientsAdapter.ViewHolder> {
+        extends ListAdapter<Ingredient, PastryIngredientsAdapter.ViewHolder> {
 
     public PastryIngredientsAdapter() {
         super(DIFF_CALLBACK);
@@ -33,34 +33,31 @@ public class PastryIngredientsAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final DummyContent.DummyItem item = getItem(position);
-        holder.mIdView.setText(item.id);
-        holder.mContentView.setText(item.content);
+        final Ingredient item = getItem(position);
+        holder.mIdView.setText(item.getIngredient());
 
         holder.itemView.setTag(item);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView mIdView;
-        final TextView mContentView;
 
         ViewHolder(View view) {
             super(view);
             mIdView = view.findViewById(R.id.id_text);
-            mContentView = view.findViewById(R.id.content);
         }
     }
 
-    private static final DiffUtil.ItemCallback<DummyContent.DummyItem> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<DummyContent.DummyItem>() {
+    private static final DiffUtil.ItemCallback<Ingredient> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Ingredient>() {
                 @Override
-                public boolean areItemsTheSame(@NonNull DummyContent.DummyItem oldItem, @NonNull DummyContent.DummyItem newItem) {
-                    return oldItem.id.equals(newItem.id);
+                public boolean areItemsTheSame(@NonNull Ingredient oldItem, @NonNull Ingredient newItem) {
+                    return oldItem.getIngredient().equals(newItem.getIngredient());
                 }
 
                 @SuppressLint("DiffUtilEquals")
                 @Override
-                public boolean areContentsTheSame(@NonNull DummyContent.DummyItem oldItem, @NonNull DummyContent.DummyItem newItem) {
+                public boolean areContentsTheSame(@NonNull Ingredient oldItem, @NonNull Ingredient newItem) {
                     return oldItem == newItem;
                 }
             };
