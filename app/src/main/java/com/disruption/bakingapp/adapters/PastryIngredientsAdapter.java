@@ -34,7 +34,8 @@ public class PastryIngredientsAdapter
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Ingredient item = getItem(position);
-        holder.mIdView.setText(item.getIngredient());
+        holder.mIdView.setText(holder.itemView.getContext().getString(R.string.ingredient_details, item.getIngredient(),
+                String.valueOf(item.getQuantity()), item.getMeasure()));
 
         holder.itemView.setTag(item);
     }
