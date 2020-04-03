@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onPastryClick(Pastry pastry) {
-        Intent intent = new Intent(this, PastryListActivity.class);
+        Intent intent = new Intent(this, PastryDetailActivity.class);
         intent.putExtra(Constants.PASTRY_ID, pastry.getId());
         startActivity(intent);
     }

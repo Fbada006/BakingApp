@@ -13,4 +13,11 @@
         android:padding="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="Text of item" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:background="@color/lightGray" />
 </LinearLayout>

@@ -4,53 +4,99 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.disruption.bakingapp.adapters.PastryIngredientsAdapter;
+import com.disruption.bakingapp.adapters.PastryStepsAdapter;
+import com.disruption.bakingapp.data.TinyDb;
+import com.disruption.bakingapp.databinding.ActivityPastryListBinding;
+import com.disruption.bakingapp.model.Pastry;
 import com.disruption.bakingapp.utils.Constants;
 
+import java.util.List;
+
 /**
- * An activity representing a single Pastry detail screen. This
- * activity is only used on narrow width devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
- * in a {@link PastryListActivity}.
+ * An activity representing a list of Pastries. This activity
+ * has different presentations for handset and tablet-size devices. On
+ * handsets, the activity presents a list of items, which when touched,
+ * lead to a {@link StepVideoActivity} representing
+ * item details. On tablets, the activity presents the list of items and
+ * item details side-by-side using two vertical panes.
  */
 public class PastryDetailActivity extends AppCompatActivity {
+
+    /**
+     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
+     * device.
+     */
+    private boolean mTwoPane;
+
+    /**
+     * The pastry passed from the MainActivity as an extra
+     */
+    private Pastry mPastry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pastry_detail);
-        Toolbar toolbar = findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
+        ActivityPastryListBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_pastry_list);
+
+        setSupportActionBar(binding.toolbar);
+        binding.toolbar.setTitle(getTitle());
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        TinyDb tinyDb = new TinyDb(this);
 
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
-        //
-        // http://developer.android.com/guide/components/fragments.html
-        //
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putParcelable(Constants.ARG_STEP_EXTRA,
-                    getIntent().getParcelableExtra(Constants.ARG_STEP_EXTRA));
-            PastryDetailFragment fragment = new PastryDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.pastry_detail_container, fragment)
-                    .commit();
+        List<Pastry> listOfPastries = tinyDb.getListOfPastries(Constants.PASTRY_LIST_KEY);
+
+        if (findViewById(R.id.pastry_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        }
+
+        //Retrieve the intent containing the pastry
+        Intent intent = getIntent();
+        RecyclerView ingredientsListRv = binding.pastryListLayout.ingredientsList;
+        RecyclerView stepsListRv = binding.pastryListLayout.stepsList;
+
+        if (intent != null && intent.hasExtra(Constants.PASTRY_ID)) {
+            int id = intent.getIntExtra(Constants.PASTRY_ID, 0);
+            mPastry =
+                    TinyDb.getPastryFromId(id, listOfPastries);
+
+            if (mPastry != null) {
+                tinyDb.putInt(Constants.OUTSTATE_PASTRY_ID, mPastry.getId());
+            }
+
+            setupIngredientsRecyclerView(ingredientsListRv);
+            setupStepsRecyclerView(stepsListRv);
+        }
+
+        int savedId = tinyDb.getInt(Constants.OUTSTATE_PASTRY_ID);
+        if (savedId != 0) {
+            //This is a saved id of the current Pastry
+            mPastry =
+                    TinyDb.getPastryFromId(savedId, listOfPastries);
+
+            if (mPastry != null) {
+                tinyDb.putInt(Constants.OUTSTATE_PASTRY_ID, mPastry.getId());
+            }
+            setupIngredientsRecyclerView(ingredientsListRv);
+            setupStepsRecyclerView(stepsListRv);
         }
     }
 
@@ -58,15 +104,27 @@ public class PastryDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            navigateUpTo(new Intent(this, PastryListActivity.class));
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupIngredientsRecyclerView(@NonNull RecyclerView recyclerView) {
+        final PastryIngredientsAdapter pastryIngredientsAdapter = new PastryIngredientsAdapter();
+        if (mPastry != null) {
+            pastryIngredientsAdapter.submitList(mPastry.getIngredients());
+        }
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
+        recyclerView.setAdapter(pastryIngredientsAdapter);
+    }
+
+    private void setupStepsRecyclerView(@NonNull RecyclerView recyclerView) {
+        final PastryStepsAdapter ingredientsAdapter = new PastryStepsAdapter(this, mTwoPane);
+        if (mPastry != null) {
+            ingredientsAdapter.submitList(mPastry.getSteps());
+        }
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
+        recyclerView.setAdapter(ingredientsAdapter);
     }
 }

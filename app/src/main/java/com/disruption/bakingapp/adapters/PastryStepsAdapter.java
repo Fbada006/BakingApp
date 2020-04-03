@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.disruption.bakingapp.StepVideoActivity;
+import com.disruption.bakingapp.StepVideoFragment;
 import com.disruption.bakingapp.PastryDetailActivity;
-import com.disruption.bakingapp.PastryDetailFragment;
-import com.disruption.bakingapp.PastryListActivity;
 import com.disruption.bakingapp.R;
 import com.disruption.bakingapp.model.Step;
 import com.disruption.bakingapp.utils.Constants;
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class PastryStepsAdapter
         extends ListAdapter<Step, PastryStepsAdapter.ViewHolder> {
 
-    private final PastryListActivity mParentActivity;
+    private final PastryDetailActivity mParentActivity;
     private final boolean mTwoPane;
 
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -39,14 +39,14 @@ public class PastryStepsAdapter
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putParcelable(Constants.ARG_STEP_EXTRA, step);
-                    PastryDetailFragment fragment = new PastryDetailFragment();
+                    StepVideoFragment fragment = new StepVideoFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
                             .replace(R.id.pastry_detail_container, fragment)
                             .commit();
                 } else {
                     Context context = view.getContext();
-                    Intent intent = new Intent(context, PastryDetailActivity.class);
+                    Intent intent = new Intent(context, StepVideoActivity.class);
                     intent.putExtra(Constants.ARG_STEP_EXTRA, step);
                     context.startActivity(intent);
                 }
@@ -54,7 +54,7 @@ public class PastryStepsAdapter
         }
     };
 
-    public PastryStepsAdapter(PastryListActivity parent,
+    public PastryStepsAdapter(PastryDetailActivity parent,
                               boolean twoPane) {
         super(DIFF_CALLBACK);
         mParentActivity = parent;

@@ -7,14 +7,13 @@
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical"
-    tools:ignore="UseCompoundDrawables">
+    tools:ignore="UnusedAttribute,UseCompoundDrawables">
 
     <TextView
         android:id="@+id/step_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:padding="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="Text of item" />
 
@@ -26,4 +25,11 @@
         android:contentDescription="@string/the_play_image"
         android:src="@drawable/ic_play"
         android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:background="@color/lightGray" />
 </LinearLayout>

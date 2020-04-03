@@ -47,9 +47,6 @@ public class Step implements Parcelable {
         return this.id;
     }
 
-    public String getShortDescription() {
-        return this.shortDescription;
-    }
 
     public String getDescription() {
         return this.description;
