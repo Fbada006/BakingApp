@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.disruption.bakingapp.databinding.PastryFragmentDetailBinding;
+import com.disruption.bakingapp.databinding.FragmentStepVideoBinding;
 import com.disruption.bakingapp.model.Step;
 import com.disruption.bakingapp.utils.Constants;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -35,7 +35,7 @@ public class StepVideoFragment extends Fragment {
      * The step to present.
      */
     private Step mStep;
-    private PastryFragmentDetailBinding mDetailBinding;
+    private FragmentStepVideoBinding mBinding;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -64,17 +64,17 @@ public class StepVideoFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDetailBinding = DataBindingUtil.inflate(inflater, R.layout.pastry_fragment_detail, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_step_video, container, false);
 
         if (mStep != null) {
-            mDetailBinding.stepDescription.setText(mStep.getDescription());
-            playerView = mDetailBinding.videoView;
+            mBinding.stepDescription.setText(mStep.getDescription());
+            playerView = mBinding.videoView;
             playbackStateListener = new PlaybackStateListener();
         }
 
-        mDetailBinding.toolbar.setNavigationOnClickListener(view -> Objects.requireNonNull(getActivity()).onBackPressed());
+        mBinding.toolbar.setNavigationOnClickListener(view -> Objects.requireNonNull(getActivity()).onBackPressed());
 
-        return mDetailBinding.getRoot();
+        return mBinding.getRoot();
     }
 
     @Override
@@ -149,10 +149,10 @@ public class StepVideoFragment extends Fragment {
                                          int playbackState) {
             switch (playbackState) {
                 case ExoPlayer.STATE_BUFFERING:
-                    mDetailBinding.progressBar.setVisibility(View.VISIBLE);
+                    mBinding.progressBar.setVisibility(View.VISIBLE);
                     break;
                 case ExoPlayer.STATE_READY:
-                    mDetailBinding.progressBar.setVisibility(View.GONE);
+                    mBinding.progressBar.setVisibility(View.GONE);
                     break;
                 default:
                     break;
