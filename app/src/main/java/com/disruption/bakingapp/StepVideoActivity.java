@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
 import com.disruption.bakingapp.utils.Constants;
 
@@ -15,9 +15,7 @@ public class StepVideoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pastry_detail);
-        Toolbar toolbar = findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
+        DataBindingUtil.setContentView(this, R.layout.activity_step_video);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();

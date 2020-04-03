@@ -15,11 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.disruption.bakingapp.adapters.PastryIngredientsAdapter;
 import com.disruption.bakingapp.adapters.PastryStepsAdapter;
 import com.disruption.bakingapp.data.TinyDb;
-import com.disruption.bakingapp.databinding.ActivityPastryListBinding;
+import com.disruption.bakingapp.databinding.ActivityPastryDetailBinding;
 import com.disruption.bakingapp.model.Pastry;
 import com.disruption.bakingapp.utils.Constants;
 
 import java.util.List;
+
 
 public class PastryDetailActivity extends AppCompatActivity {
 
@@ -37,11 +38,10 @@ public class PastryDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityPastryListBinding binding =
-                DataBindingUtil.setContentView(this, R.layout.activity_pastry_list);
+        ActivityPastryDetailBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_pastry_detail);
 
         setSupportActionBar(binding.toolbar);
-        binding.toolbar.setTitle(getTitle());
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -72,6 +72,8 @@ public class PastryDetailActivity extends AppCompatActivity {
 
             setupIngredientsRecyclerView(ingredientsListRv);
             setupStepsRecyclerView(stepsListRv);
+
+            setTitle(mPastry.getName());
         }
 
         int savedId = tinyDb.getInt(Constants.OUTSTATE_PASTRY_ID);
@@ -85,6 +87,7 @@ public class PastryDetailActivity extends AppCompatActivity {
             }
             setupIngredientsRecyclerView(ingredientsListRv);
             setupStepsRecyclerView(stepsListRv);
+            setTitle(mPastry.getName());
         }
     }
 

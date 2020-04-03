@@ -3,13 +3,14 @@ package com.disruption.bakingapp;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.disruption.bakingapp.databinding.PastryFragmentDetailBinding;
 import com.disruption.bakingapp.model.Step;
 import com.disruption.bakingapp.utils.Constants;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -24,12 +25,17 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 public class StepVideoFragment extends Fragment {
-    private static final String TAG = "StepVideoFragment";
+
     /**
      * The step to present.
      */
     private Step mStep;
+    private PastryFragmentDetailBinding mDetailBinding;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -56,17 +62,19 @@ public class StepVideoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.pastry_fragment_detail, container, false);
-
+        mDetailBinding = DataBindingUtil.inflate(inflater, R.layout.pastry_fragment_detail, container, false);
 
         if (mStep != null) {
-            playerView = rootView.findViewById(R.id.video_view);
+            mDetailBinding.stepDescription.setText(mStep.getDescription());
+            playerView = mDetailBinding.videoView;
             playbackStateListener = new PlaybackStateListener();
         }
 
-        return rootView;
+        mDetailBinding.toolbar.setNavigationOnClickListener(view -> Objects.requireNonNull(getActivity()).onBackPressed());
+
+        return mDetailBinding.getRoot();
     }
 
     @Override
@@ -139,26 +147,16 @@ public class StepVideoFragment extends Fragment {
         @Override
         public void onPlayerStateChanged(boolean playWhenReady,
                                          int playbackState) {
-            String stateString;
             switch (playbackState) {
-                case ExoPlayer.STATE_IDLE:
-                    stateString = "ExoPlayer.STATE_IDLE      -";
-                    break;
                 case ExoPlayer.STATE_BUFFERING:
-                    stateString = "ExoPlayer.STATE_BUFFERING -";
+                    mDetailBinding.progressBar.setVisibility(View.VISIBLE);
                     break;
                 case ExoPlayer.STATE_READY:
-                    stateString = "ExoPlayer.STATE_READY     -";
-                    break;
-                case ExoPlayer.STATE_ENDED:
-                    stateString = "ExoPlayer.STATE_ENDED     -";
+                    mDetailBinding.progressBar.setVisibility(View.GONE);
                     break;
                 default:
-                    stateString = "UNKNOWN_STATE             -";
                     break;
             }
-            Log.d(TAG, "changed state to " + stateString
-                    + " playWhenReady: " + playWhenReady);
         }
     }
 
