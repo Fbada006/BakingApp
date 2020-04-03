@@ -9,4 +9,6 @@
     <string name="pastry_ingredients_label">Ingredients</string>
     <string name="pastry_steps_label">Steps</string>
     <string name="the_play_image">The play image</string>
+    <string name="appwidget_text">Pastries</string>
+    <string name="add_widget">Add widget</string>
 </resources>

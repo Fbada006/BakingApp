@@ -14,8 +14,8 @@ public class TinyDb {
 
     private SharedPreferences preferences;
 
-    public TinyDb(Context appContext) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
+    public TinyDb(Context context) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
     }
 
     public List<Pastry> getListOfPastries(String key) {

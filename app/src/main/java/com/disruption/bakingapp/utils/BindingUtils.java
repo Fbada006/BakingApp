@@ -36,7 +36,7 @@ public class BindingUtils {
         }
     }
 
-    private static int getPastryDrawable(Context context, String drawableName) {
+    public static int getPastryDrawable(Context context, String drawableName) {
         return context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
     }
 }
