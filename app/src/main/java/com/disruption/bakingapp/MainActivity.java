@@ -2,8 +2,12 @@ package com.disruption.bakingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -69,5 +73,20 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PastryDetailActivity.class);
         intent.putExtra(Constants.PASTRY_ID, pastry.getId());
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.test_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_test_setting) {
+            Toast.makeText(this, "Testing Settings Only", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

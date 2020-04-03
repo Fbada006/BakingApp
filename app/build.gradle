@@ -35,10 +35,12 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.preference:preference:1.1.0'
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test:runner:$androidx_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$expresso_version"
-
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$expresso_version"
+    androidTestImplementation "androidx.test:rules:$rules_version"
 
     //Recycler View
     implementation "androidx.recyclerview:recyclerview:$recylerview_version"
