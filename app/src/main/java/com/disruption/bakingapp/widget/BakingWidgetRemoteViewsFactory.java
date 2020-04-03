@@ -1,7 +1,6 @@
 package com.disruption.bakingapp.widget;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -18,7 +17,7 @@ public class BakingWidgetRemoteViewsFactory implements RemoteViewsService.Remote
     private Context mContext;
     private List<Pastry> mPastries;
 
-    public BakingWidgetRemoteViewsFactory(Context context, Intent intent) {
+    public BakingWidgetRemoteViewsFactory(Context context) {
         mContext = context;
     }
 
