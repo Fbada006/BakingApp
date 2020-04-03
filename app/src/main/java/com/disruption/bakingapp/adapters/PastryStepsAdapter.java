@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import com.disruption.bakingapp.PastryDetailFragment;
 import com.disruption.bakingapp.PastryListActivity;
 import com.disruption.bakingapp.R;
 import com.disruption.bakingapp.model.Step;
+import com.disruption.bakingapp.utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,20 +34,22 @@ public class PastryStepsAdapter
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Step item = (Step) view.getTag();
-            if (mTwoPane) {
-                Bundle arguments = new Bundle();
-                arguments.putString(PastryDetailFragment.ARG_PASTRY_NAME, item.getDescription());
-                PastryDetailFragment fragment = new PastryDetailFragment();
-                fragment.setArguments(arguments);
-                mParentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.pastry_detail_container, fragment)
-                        .commit();
-            } else {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, PastryDetailActivity.class);
-                intent.putExtra(PastryDetailFragment.ARG_PASTRY_NAME, item.getDescription());
-                context.startActivity(intent);
+            Step step = (Step) view.getTag();
+            if (!TextUtils.isEmpty(step.getVideoURL())) {
+                if (mTwoPane) {
+                    Bundle arguments = new Bundle();
+                    arguments.putParcelable(Constants.ARG_STEP_EXTRA, step);
+                    PastryDetailFragment fragment = new PastryDetailFragment();
+                    fragment.setArguments(arguments);
+                    mParentActivity.getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.pastry_detail_container, fragment)
+                            .commit();
+                } else {
+                    Context context = view.getContext();
+                    Intent intent = new Intent(context, PastryDetailActivity.class);
+                    intent.putExtra(Constants.ARG_STEP_EXTRA, step);
+                    context.startActivity(intent);
+                }
             }
         }
     };
@@ -60,25 +65,32 @@ public class PastryStepsAdapter
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.pastry_list_content_item, parent, false);
+                .inflate(R.layout.steps_list_content_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Step item = getItem(position);
-        holder.mIdView.setText(item.getDescription());
+        final Step step = getItem(position);
+        holder.mIdView.setText(step.getDescription());
+        if (hasVideo(step)) {
+            holder.mPlay.setVisibility(View.VISIBLE);
+        } else {
+            holder.mPlay.setVisibility(View.GONE);
+        }
 
-        holder.itemView.setTag(item);
+        holder.itemView.setTag(step);
         holder.itemView.setOnClickListener(mOnClickListener);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView mIdView;
+        final ImageView mPlay;
 
         ViewHolder(View view) {
             super(view);
-            mIdView = view.findViewById(R.id.id_text);
+            mIdView = view.findViewById(R.id.step_description);
+            mPlay = view.findViewById(R.id.iv_step_video);
         }
     }
 
@@ -95,4 +107,8 @@ public class PastryStepsAdapter
                     return oldItem == newItem;
                 }
             };
+
+    private boolean hasVideo(Step step) {
+        return !TextUtils.isEmpty(step.getVideoURL());
+    }
 }

@@ -9,6 +9,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.disruption.bakingapp.adapters.PastryIngredientsAdapter;
@@ -30,14 +31,11 @@ import java.util.List;
  */
 public class PastryListActivity extends AppCompatActivity {
 
-    private static final String TAG = "PastryListActivity";
-
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
-
 
     /**
      * The pastry passed from the MainActivity as an extra
@@ -84,31 +82,21 @@ public class PastryListActivity extends AppCompatActivity {
                 tinyDb.putInt(Constants.OUTSTATE_PASTRY_ID, mPastry.getId());
             }
 
-            if (ingredientsListRv != null) {
-                setupIngredientsRecyclerView(ingredientsListRv);
-            }
-
-            if (stepsListRv != null) {
-                setupStepsRecyclerView(stepsListRv);
-            }
+            setupIngredientsRecyclerView(ingredientsListRv);
+            setupStepsRecyclerView(stepsListRv);
         }
 
         int savedId = tinyDb.getInt(Constants.OUTSTATE_PASTRY_ID);
         if (savedId != 0) {
+            //This is a saved id of the current Pastry
             mPastry =
                     TinyDb.getPastryFromId(savedId, listOfPastries);
 
             if (mPastry != null) {
                 tinyDb.putInt(Constants.OUTSTATE_PASTRY_ID, mPastry.getId());
             }
-
-            if (ingredientsListRv != null) {
-                setupIngredientsRecyclerView(ingredientsListRv);
-            }
-
-            if (stepsListRv != null) {
-                setupStepsRecyclerView(stepsListRv);
-            }
+            setupIngredientsRecyclerView(ingredientsListRv);
+            setupStepsRecyclerView(stepsListRv);
         }
     }
 
@@ -127,6 +115,7 @@ public class PastryListActivity extends AppCompatActivity {
         if (mPastry != null) {
             pastryIngredientsAdapter.submitList(mPastry.getIngredients());
         }
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
         recyclerView.setAdapter(pastryIngredientsAdapter);
     }
 
@@ -135,6 +124,7 @@ public class PastryListActivity extends AppCompatActivity {
         if (mPastry != null) {
             ingredientsAdapter.submitList(mPastry.getSteps());
         }
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
         recyclerView.setAdapter(ingredientsAdapter);
     }
 }

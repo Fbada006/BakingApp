@@ -6,14 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.disruption.bakingapp.model.Ingredient;
+import com.disruption.bakingapp.model.Step;
 import com.disruption.bakingapp.utils.Constants;
-import com.disruption.bakingapp.viewmodels.PastryViewModel;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 /**
@@ -23,16 +20,11 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
  * on handsets.
  */
 public class PastryDetailFragment extends Fragment {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
-    public static final String ARG_PASTRY_NAME = "ingredient_name";
 
     /**
      * The dummy content this fragment is presenting.
      */
-    private Ingredient mItem;
+    private Step mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -45,18 +37,16 @@ public class PastryDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final PastryViewModel viewModel = new ViewModelProvider(this).get(PastryViewModel.class);
-
-        if (getArguments().containsKey(ARG_PASTRY_NAME)) {
+        if (getArguments() != null && getArguments().containsKey(Constants.ARG_STEP_EXTRA)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = getArguments().getParcelable(ARG_PASTRY_NAME);
+            mItem = getArguments().getParcelable(Constants.ARG_STEP_EXTRA);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                //appBarLayout.setTitle(mItem.content);
+                appBarLayout.setTitle(mItem.getDescription());
             }
         }
     }
@@ -68,7 +58,7 @@ public class PastryDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.pastry_detail)).setText("Details");
+            ((TextView) rootView.findViewById(R.id.pastry_detail)).setText(mItem.getDescription());
         }
 
         return rootView;

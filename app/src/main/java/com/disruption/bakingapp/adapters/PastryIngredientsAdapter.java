@@ -27,7 +27,7 @@ public class PastryIngredientsAdapter
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.pastry_list_content_item, parent, false);
+                .inflate(R.layout.ingredient_list_content_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -44,7 +44,7 @@ public class PastryIngredientsAdapter
 
         ViewHolder(View view) {
             super(view);
-            mIdView = view.findViewById(R.id.id_text);
+            mIdView = view.findViewById(R.id.step_description);
         }
     }
 
