@@ -24,12 +24,6 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-/**
- * A fragment representing a single Pastry detail screen.
- * This fragment is either contained in a {@link PastryDetailActivity}
- * in two-pane mode (on tablets) or a {@link StepVideoActivity}
- * on handsets.
- */
 public class StepVideoFragment extends Fragment {
     private static final String TAG = "StepVideoFragment";
     /**

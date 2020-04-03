@@ -6,8 +6,6 @@
     <string name="title_pastry_list">Pastries</string>
     <string name="title_pastry_detail">Pastry Detail</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pastry_ingredients_label">Ingredients</string>
     <string name="pastry_steps_label">Steps</string>
     <string name="the_play_image">The play image</string>
